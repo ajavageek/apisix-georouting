@@ -1,0 +1,11 @@
+apisix:
+  enable_admin: false
+  config_center: yaml
+nginx_config:
+  http:
+    access_log_format: "$remote_addr - $remote_user [$time_local][$geoip_country_code] $http_host \"$request\" $status $body_bytes_sent $request_time \"$http_referer\" \"$http_user_agent\" $upstream_addr $upstream_status $upstream_response_time"
+  main_configuration_snippet: |
+    load_module     "modules/ngx_http_geoip_module.so";
+  http_configuration_snippet: |
+    geoip_country   /usr/share/GeoIP/GeoIP.dat;
+    geoip_proxy     0.0.0.0/0;

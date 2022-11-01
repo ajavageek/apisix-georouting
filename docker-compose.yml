@@ -1,0 +1,25 @@
+version: '3'
+services:
+  apisix:
+    build: ./apisix_build
+    volumes:
+      - ./apisix_conf/config.yml:/usr/local/apisix/conf/config.yaml:ro
+      - ./apisix_conf/routes.yml:/usr/local/apisix/conf/apisix.yaml:ro
+    ports:
+      - "9080:9080"
+  french:
+    image: busybox:1.34
+    command: ["/bin/busybox", "httpd", "-f", "-p", "8081"]
+    volumes:
+      - ./httpd.conf:/etc/httpd.conf
+      - ./french:/www
+    ports:
+      - "8081:8081"
+  english:
+    image: busybox:1.34
+    command: ["/bin/busybox", "httpd", "-f", "-p", "8082"]
+    volumes:
+      - ./httpd.conf:/etc/httpd.conf
+      - ./english:/www
+    ports:
+      - "8082:8082"
